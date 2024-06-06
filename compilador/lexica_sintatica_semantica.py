@@ -251,7 +251,8 @@ codigo_teste = """
 programa
 inteiro x;
 decimal y;
-x := 2;
+escreva("digite um número");
+leia(x);
 y := 2.5;
 y := x + y;
 escreva(y);

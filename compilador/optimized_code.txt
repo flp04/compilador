@@ -1,8 +1,7 @@
 INICIO_PROGRAMA
 DECLARE x inteiro
 DECLARE y decimal
-ESCREVA "digite um número"
-LEIA x
+x := 2
 y := 2.5
 y := x + y
 ESCREVA y

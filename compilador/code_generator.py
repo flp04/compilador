@@ -20,9 +20,14 @@ def generate_final_code(optimized_code):
             final_code.append(f"System.out.println({args});")
         elif line.startswith("LEIA"):
             var_name = line.split()[1]
-            final_code.append(f"{var_name} = prompt('Digite');")
+            final_code.append(f"{var_name} = scanner.nextInt();")
         elif line == "INICIO_PROGRAMA":
             final_code.append("public class Main { public static void main(String[] args) {")
+            for l in lines:
+                if l.startswith("LEIA"):
+                    final_code.insert(0, f"import java.util.Scanner;")
+                    final_code.append(f"Scanner scanner = new Scanner(System.in);")
+                    break
             # final_code.append("def main():")
         elif line == "FIM_PROGRAMA":
             final_code.append("}}")
