@@ -202,7 +202,7 @@ class Parser:
             elif right[1] == 'DECIMAL':
                 right_type = 'decimal'
             
-            if left_type != right_type and left_type != 'inteiro' and left_type != 'decimal':
+            if left_type != right_type or left_type != 'inteiro' and left_type != 'decimal':
                 raise TypeError(f"Operação inválida entre tipos '{left_type}' e '{right_type}'")
             
             left = ('binop', operador, left, right)
@@ -247,28 +247,33 @@ class Parser:
         return ('atribuicao', id_token, operador, expr)
 
 # Teste do lexer e parser com análise semântica
-codigo_teste = """
-programa
-inteiro x;
-decimal y;
-escreva("digite um número");
-leia(x);
-y := 2.5;
-y := x + y;
-escreva(y);
-fimprog
-"""
+with open('../codigo_fonte.txt', 'r', encoding='utf-8') as f:
+    codigo_teste = eval(f.read())
+    # f.write(str(codigo_teste) + '\n')
+
+# codigo_teste = """
+# programa
+# inteiro x;
+# decimal y;
+# escreva("digite um número");
+# leia(x);
+# y := 2.5;
+# y := x + y;
+# escreva(y);
+# fimprog
+# """
 
 tokens = lexer(codigo_teste)
-print("Tokens:")
-for token in tokens:
-    print(token)
+print(tokens)
+# print("Tokens:")
+# for token in tokens:
+#     print(token)
 
-parser = Parser(tokens)
-ast = parser.parse()
-print("\nAST:")
-print(ast)
+# parser = Parser(tokens)
+# ast = parser.parse()
+# print("\nAST:")
+# print(ast)
 
-# semantic_results = semantic_analysis(ast)
-with open('semantic_analysis.txt', 'w', encoding='utf-8') as f:
-    f.write(str(ast) + '\n')
+# # semantic_results = semantic_analysis(ast)
+# with open('semantic_analysis.txt', 'w', encoding='utf-8') as f:
+#     f.write(str(ast) + '\n')

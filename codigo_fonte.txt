@@ -1,0 +1,18 @@
+"""
+programa
+decimal notaA1;
+decimal notaA2;
+decimal notaA3;
+decimal media;
+escreva("PROGRAMA PARA CALCULO DA MÉDIA SEMESTRAL DO ALUNO");
+escreva("Digite a nota da A1");
+leia(notaA1);
+escreva("Digite a nota da A2");
+leia(notaA2);
+escreva("Digite a nota da A3");
+leia(notaA3);
+media := (notaA1 + notaA2 + notaA3);
+media := media / 3.0;
+escreva(media);
+fimprog
+"""

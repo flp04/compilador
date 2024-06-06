@@ -20,7 +20,7 @@ def generate_final_code(optimized_code):
             final_code.append(f"System.out.println({args});")
         elif line.startswith("LEIA"):
             var_name = line.split()[1]
-            final_code.append(f"{var_name} = scanner.nextInt();")
+            final_code.append(f"{var_name} = scanner.nextDouble();")
         elif line == "INICIO_PROGRAMA":
             final_code.append("public class Main { public static void main(String[] args) {")
             for l in lines:
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     with open('intermediate_code.txt', 'r', encoding='utf-8') as f:
         optimized_code = f.read()
     final_code = generate_final_code(optimized_code)
-    with open('final_code.js', 'w', encoding='utf-8') as f:
+    with open('../codigo_objeto.java', 'w', encoding='utf-8') as f:
         f.write(final_code)
 
     print("Código Final:")

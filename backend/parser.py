@@ -1,72 +1,4 @@
-# código para realizar as análises de frontend de um compilador
-
-import re
-
-# Definição dos tipos de token
-TIPOS_TOKEN = {
-    'PALAVRA_CHAVE': 'PALAVRA_CHAVE',
-    'ID': 'ID',
-    'NUMERO': 'NUMERO',
-    'OPERADOR': 'OPERADOR',
-    'DELIMITADOR': 'DELIMITADOR',
-    'TEXTO': 'TEXTO'
-}
-
-# Palavras-chave da linguagem
-PALAVRAS_CHAVE = ['programa', 'fimprog', 'inteiro', 'decimal', 'leia', 'escreva', 'if', 'else']
-
-# Operadores e delimitadores
-OPERADORES = ['+', '-', '*', '/', '<', '>', '<=', '>=', '!=', '==', ':=', '=']
-DELIMITADORES = ['(', ')', '{', '}', ',', ';']
-
-def lexer(codigo):
-    tokens = []
-    codigo = codigo.replace('\n', ' ')  # Remover quebras de linha
-    while codigo:
-        # Verificar palavras-chave, identificadores, números, operadores, delimitadores e texto com expressões regulares
-        match = re.match(r'\s*(\b(?:' + '|'.join(PALAVRAS_CHAVE) + r')\b|[a-zA-Z_á-úÁ-Ú][a-zA-Z0-9_á-úÁ-Ú]*|\d+|'
-                         r'\+|\-|\*|\/|<|>|<=|>=|!=|==|:=|=|\(|\)|\{|\}|,|;|"([^"\\]*(?:\\.[^"\\]*)*)")\s*', codigo)
-        if match:
-            valor = match.group(1)
-            codigo = codigo[len(match.group(0)):]
-            if valor in PALAVRAS_CHAVE:
-                tipo_token = TIPOS_TOKEN['PALAVRA_CHAVE']
-            elif valor in OPERADORES:
-                tipo_token = TIPOS_TOKEN['OPERADOR']
-            elif valor in DELIMITADORES:
-                tipo_token = TIPOS_TOKEN['DELIMITADOR']
-            elif valor.isdigit():
-                tipo_token = TIPOS_TOKEN['NUMERO']
-            elif valor[0].isalpha():
-                tipo_token = TIPOS_TOKEN['ID']
-            else:
-                tipo_token = TIPOS_TOKEN['TEXTO']
-                valor = valor[1:-1]  # Remover aspas do texto
-            tokens.append((valor, tipo_token))
-        elif codigo[0] == ' ':
-            codigo = codigo[1:]  # Ignorar espaços em branco
-        else:
-            raise ValueError('Token inválido: ' + codigo)
-    return tokens
-
-class SemanticAnalyzer:
-    def __init__(self):
-        self.symbol_table = {}
-
-    def declare_variable(self, var_name, var_type):
-        if var_name in self.symbol_table:
-            raise ValueError(f"Variável '{var_name}' já declarada.")
-        self.symbol_table[var_name] = var_type
-
-    def check_variable(self, var_name):
-        if var_name not in self.symbol_table:
-            raise ValueError(f"Variável '{var_name}' não declarada.")
-        return self.symbol_table[var_name]
-
-    def check_type(self, var_name, expected_type):
-        var_type = self.check_variable(var_name)
-        if var_type != expected_type:
-            raise TypeError(f"Tipo incompatível: variável '{var_name}' é do tipo '{var_type}', esperado '{expected_type}'.")
+from semantic_analyzer import SemanticAnalyzer
 
 class Parser:
     def __init__(self, tokens):
@@ -188,14 +120,18 @@ class Parser:
             if left[1] == 'ID':
                 left_type = self.semantic_analyzer.check_variable(left[0])
             elif left[1] == 'NUMERO':
-                left_type = 'inteiro'  # Supondo que todos os números são inteiros para simplificação
+                left_type = 'inteiro'
+            elif left[1] == 'DECIMAL':
+                left_type = 'decimal'
             
             if right[1] == 'ID':
                 right_type = self.semantic_analyzer.check_variable(right[0])
             elif right[1] == 'NUMERO':
                 right_type = 'inteiro'
+            elif right[1] == 'DECIMAL':
+                right_type = 'decimal'
             
-            if left_type != right_type:
+            if left_type != right_type or left_type != 'inteiro' and left_type != 'decimal':
                 raise TypeError(f"Operação inválida entre tipos '{left_type}' e '{right_type}'")
             
             left = ('binop', operador, left, right)
@@ -207,6 +143,8 @@ class Parser:
             return self.consume('ID')
         elif token[1] == 'NUMERO':
             return self.consume('NUMERO')
+        elif token[1] == 'DECIMAL':
+            return self.consume('DECIMAL')
         elif token[0] == '(':
             self.consume('DELIMITADOR', '(')
             expr = self.expr()
@@ -224,7 +162,7 @@ class Parser:
 
     def argumento(self):
         token = self.current_token()
-        if token[1] in ['TEXTO', 'ID', 'NUMERO']:
+        if token[1] in ['TEXTO', 'ID', 'NUMERO', 'DECIMAL']:
             return self.consume()
         else:
             raise SyntaxError(f"Argumento inválido: {token}")
@@ -236,32 +174,33 @@ class Parser:
         expr = self.expr()
         self.consume('DELIMITADOR', ';')
         return ('atribuicao', id_token, operador, expr)
+    
+tokens = []
 
 # Teste do lexer e parser com análise semântica
-codigo_teste = """
-programa
-inteiro x, y;
-escreva("Olá, mundo!");
-leia(x);
-if (x > 0) {
-    y := x * 2;
-    escreva("O dobro de ", x, " é ", y);
-} else {
-    escreva("O valor de x é negativo");
-}
-fimprog
-"""
+with open('tokens.txt', 'r', encoding='utf-8') as arquivo:
+  linhas = arquivo.readlines()
 
-tokens = lexer(codigo_teste)
-print("Tokens:")
-for token in tokens:
-    print(token)
+for linha in linhas:
+  linha = linha.strip().strip("()").replace("'", "")
+  token, tipo = linha.split(', ')
+  tokens.append((token, tipo))
+
+# print(tokens.split('\n'))
+
+# print(tokens)
+
+# i=1
+# for token in tokens:
+#   print(i)
+#   print(token)
+#   i += 1
 
 parser = Parser(tokens)
 ast = parser.parse()
+
 print("\nAST:")
 print(ast)
 
-# semantic_results = semantic_analysis(ast)
-with open('semantic_analysis.txt', 'w') as f:
-    f.write(str(ast) + '\n')
+with open('semantic_analysis.txt', 'w', encoding='utf-8') as f:
+  f.write(str(ast) + '\n')
