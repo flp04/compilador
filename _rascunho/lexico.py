@@ -5,14 +5,13 @@ TIPOS_TOKEN = {
     'PALAVRA_CHAVE': 'PALAVRA_CHAVE',
     'ID': 'ID',
     'NUMERO': 'NUMERO',
-    'DECIMAL': 'DECIMAL',
     'OPERADOR': 'OPERADOR',
     'DELIMITADOR': 'DELIMITADOR',
     'TEXTO': 'TEXTO'
 }
 
 # Palavras-chave da linguagem
-PALAVRAS_CHAVE = ['programa', 'fimprog', 'inteiro', 'decimal', 'leia', 'escreva', 'se', 'senao']
+PALAVRAS_CHAVE = ['programa', 'fimprog', 'inteiro', 'decimal', 'leia', 'escreva', 'if', 'else']
 
 # Operadores e delimitadores
 OPERADORES = ['+', '-', '*', '/', '<', '>', '<=', '>=', '!=', '==', ':=', '=']
@@ -22,9 +21,9 @@ def lexer(codigo):
     tokens = []
     codigo = codigo.replace('\n', ' ')  # Remover quebras de linha
     while codigo:
-        # Verificar palavras-chave, identificadores, números, operadores, delimitadores e texto com expressões regulares
-        match = re.match(r'\s*(\b(?:' + '|'.join(PALAVRAS_CHAVE) + r')\b|[a-zA-Z_á-úÁ-Ú][a-zA-Z0-9_á-úÁ-Ú]*|\d+(\.\d*)?|'
-                         r'\+|\-|\*|\/|<=|>=|<|>|!=|==|:=|=|\(|\)|\{|\}|,|;|"([^"\\]*(?:\\.[^"\\]*)*)")\s*', codigo)
+        # Verificar palavras-chave, identificadores, números, operadores, delimitadores e texto
+        match = re.match(r'\s*(\b(?:' + '|'.join(PALAVRAS_CHAVE) + r')\b|[a-zA-Z_á-úÁ-Ú][a-zA-Z0-9_á-úÁ-Ú]*|\d+|'
+                         r'\+|\-|\*|\/|<|>|<=|>=|!=|==|:=|=|\(|\)|\{|\}|,|;|"([^"\\]*(?:\\.[^"\\]*)*)")\s*', codigo)
         if match:
             valor = match.group(1)
             codigo = codigo[len(match.group(0)):]
@@ -36,8 +35,6 @@ def lexer(codigo):
                 tipo_token = TIPOS_TOKEN['DELIMITADOR']
             elif valor.isdigit():
                 tipo_token = TIPOS_TOKEN['NUMERO']
-            elif re.match(r'\d+(\.\d*)?', valor):
-                tipo_token = TIPOS_TOKEN['DECIMAL']
             elif valor[0].isalpha():
                 tipo_token = TIPOS_TOKEN['ID']
             else:
@@ -50,16 +47,31 @@ def lexer(codigo):
             raise ValueError('Token inválido: ' + codigo)
     return tokens
 
-# Teste do lexer e parser com análise semântica
-with open('codigo_fonte.txt', 'r', encoding='utf-8') as f:
-    codigo_teste = f.read()
+# Teste do lexer
+codigo_teste = """
+programa
+decimal notaA1, notaA2, notaA3, media;
+escreva("PROGRAMA PARA CALCULAR MÉDIA E APROVAÇÃO SEMESTRAL DO ALUNO");
+escreva("Digite a nota da A1");
+leia(notaA1);
+escreva("Digite a nota da A2");
+leia(notaA2);
+escreva("Digite a nota da A3");
+leia(notaA3);
+if (x > 0) {
+    y := x * 2;
+    escreva("O dobro de ", x, " é ", y);
+} else {
+    escreva("O valor de x é negativo");
+}
+fimprog
+"""
 
 tokens = lexer(codigo_teste)
+for token in tokens:
+    print(token)
 
-with open('./tokens.txt', 'w', encoding='utf-8') as f:
+tokens = lexer(codigo_teste)
+with open('tokens.txt', 'w', encoding='utf-8') as f:
     for token in tokens:
         f.write(str(token) + '\n')
-
-# print("Tokens:")
-# print(tokens)
-# print()

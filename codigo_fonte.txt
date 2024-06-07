@@ -1,9 +1,31 @@
 programa
-inteiro ano_nascimento;
-inteiro idade;
-escreva("Hello World");
-escreva("Digite seu ano de nascimento");
-leia(ano_nascimento);
-idade := 2024 - ano_nascimento;
-escreva(idade);
+
+decimal notaA1;
+decimal notaA2;
+decimal notaA3;
+decimal soma_notas;
+decimal media;
+
+escreva("PROGRAMA PARA CALCULAR A MÉDIA DO SEMESTRE");
+
+escreva("Digite a nota da A1");
+leia(notaA1);
+
+escreva("Digite a nota da A2");
+leia(notaA2);
+
+escreva("Digite a nota da A3");
+leia(notaA3);
+
+soma_notas := (notaA1 + notaA2 + notaA3);
+media := soma_notas / 3.0;
+
+se (media >= 7.0) {
+  escreva("Aluno aprovado.");
+  escreva(media);
+} senao {
+  escreva("Aluno reprovado.");
+  escreva(media);
+}
+
 fimprog

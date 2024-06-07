@@ -30,7 +30,7 @@ def generate_intermediate_code(ast):
             args = ", ".join(arg[0] if arg[1] != 'TEXTO' else f'"{arg[0]}"' for arg in node[1])
             intermediate_code.append(f"ESCREVA {args}")
         
-        elif node[0] == 'se' or node[0] == 'if_else':
+        elif node[0] == 'if' or node[0] == 'if_else':
             expr = generate_expression_code(node[1])
             intermediate_code.append(f"IF {expr} THEN")
             traverse(node[2])
@@ -51,8 +51,6 @@ def generate_intermediate_code(ast):
     def generate_expression_code(node):
         if node[1] == 'NUMERO':
             return node[0]
-        if node[1] == 'DECIMAL':
-            return node[0]
         elif node[1] == 'ID':
             return node[0]
         elif node[0] == 'binop':
@@ -66,12 +64,11 @@ def generate_intermediate_code(ast):
     return "\n".join(intermediate_code)
 
 if __name__ == "__main__":
-    with open('./semantic_analysis.txt', 'r', encoding='utf-8') as f:
+    with open('ast.txt', 'r') as f:
         ast = eval(f.read())
     intermediate_code = generate_intermediate_code(ast)
-    with open('./intermediate_code.txt', 'w', encoding='utf-8') as f:
+    with open('intermediate_code.txt', 'w') as f:
         f.write(intermediate_code)
 
-    # print("Código Intermediário:")
-    # print(intermediate_code)
-    # print()
+    print("Código Intermediário:")
+    print(intermediate_code)

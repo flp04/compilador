@@ -1,10 +1,56 @@
-from semantic_analyzer import SemanticAnalyzer
+import re
+
+# Definição dos tipos de token
+TIPOS_TOKEN = {
+    'PALAVRA_CHAVE': 'PALAVRA_CHAVE',
+    'ID': 'ID',
+    'NUMERO': 'NUMERO',
+    'OPERADOR': 'OPERADOR',
+    'DELIMITADOR': 'DELIMITADOR',
+    'TEXTO': 'TEXTO'
+}
+
+# Palavras-chave da linguagem
+PALAVRAS_CHAVE = ['programa', 'fimprog', 'inteiro', 'decimal', 'leia', 'escreva', 'if', 'else']
+
+# Operadores e delimitadores
+OPERADORES = ['+', '-', '*', '/', '<', '>', '<=', '>=', '!=', '==', ':=', '=']
+DELIMITADORES = ['(', ')', '{', '}', ',', ';']
+
+def lexer(codigo):
+    tokens = []
+    codigo = codigo.replace('\n', ' ')  # Remover quebras de linha
+    while codigo:
+        # Verificar palavras-chave, identificadores, números, operadores, delimitadores e texto
+        match = re.match(r'\s*(\b(?:' + '|'.join(PALAVRAS_CHAVE) + r')\b|[a-zA-Z_á-úÁ-Ú][a-zA-Z0-9_á-úÁ-Ú]*|\d+|'
+                         r'\+|\-|\*|\/|<|>|<=|>=|!=|==|:=|=|\(|\)|\{|\}|,|;|"([^"\\]*(?:\\.[^"\\]*)*)")\s*', codigo)
+        if match:
+            valor = match.group(1)
+            codigo = codigo[len(match.group(0)):]
+            if valor in PALAVRAS_CHAVE:
+                tipo_token = TIPOS_TOKEN['PALAVRA_CHAVE']
+            elif valor in OPERADORES:
+                tipo_token = TIPOS_TOKEN['OPERADOR']
+            elif valor in DELIMITADORES:
+                tipo_token = TIPOS_TOKEN['DELIMITADOR']
+            elif valor.isdigit():
+                tipo_token = TIPOS_TOKEN['NUMERO']
+            elif valor[0].isalpha():
+                tipo_token = TIPOS_TOKEN['ID']
+            else:
+                tipo_token = TIPOS_TOKEN['TEXTO']
+                valor = valor[1:-1]  # Remover aspas do texto
+            tokens.append((valor, tipo_token))
+        elif codigo[0] == ' ':
+            codigo = codigo[1:]  # Ignorar espaços em branco
+        else:
+            raise ValueError('Token inválido: ' + codigo)
+    return tokens
 
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
         self.pos = 0
-        self.semantic_analyzer = SemanticAnalyzer()
 
     def current_token(self):
         return self.tokens[self.pos] if self.pos < len(self.tokens) else None
@@ -40,8 +86,6 @@ class Parser:
         tipo = self.tipo()
         var_list = self.var_list()
         self.consume('DELIMITADOR', ';')
-        for var in var_list:
-            self.semantic_analyzer.declare_variable(var[0], tipo)
         return ('declaracao', tipo, var_list)
 
     def tipo(self):
@@ -62,7 +106,7 @@ class Parser:
             return self.escreva()
         elif self.current_token()[0] == 'leia':
             return self.leia()
-        elif self.current_token()[0] == 'se':
+        elif self.current_token()[0] == 'if':
             return self.condicional()
         elif self.current_token()[0] == '{':
             return self.bloco()
@@ -75,9 +119,6 @@ class Parser:
         self.consume('PALAVRA_CHAVE', 'escreva')
         self.consume('DELIMITADOR', '(')
         argumentos = self.argumento_list()
-        for arg in argumentos:
-            if arg[1] == 'ID':
-                self.semantic_analyzer.check_variable(arg[0])
         self.consume('DELIMITADOR', ')')
         self.consume('DELIMITADOR', ';')
         return ('escreva', argumentos)
@@ -86,22 +127,21 @@ class Parser:
         self.consume('PALAVRA_CHAVE', 'leia')
         self.consume('DELIMITADOR', '(')
         id_token = self.consume('ID')
-        self.semantic_analyzer.check_variable(id_token[0])  # Verifica se a variável foi declarada
         self.consume('DELIMITADOR', ')')
         self.consume('DELIMITADOR', ';')
         return ('leia', id_token)
 
     def condicional(self):
-        self.consume('PALAVRA_CHAVE', 'se')
+        self.consume('PALAVRA_CHAVE', 'if')
         self.consume('DELIMITADOR', '(')
         expr = self.expr()
         self.consume('DELIMITADOR', ')')
         bloco = self.bloco()
-        if self.current_token() and self.current_token()[0] == 'senao':
-            self.consume('PALAVRA_CHAVE', 'senao')
+        if self.current_token() and self.current_token()[0] == 'else':
+            self.consume('PALAVRA_CHAVE', 'else')
             else_bloco = self.bloco()
             return ('if_else', expr, bloco, else_bloco)
-        return ('se', expr, bloco)
+        return ('if', expr, bloco)
 
     def bloco(self):
         self.consume('DELIMITADOR', '{')
@@ -116,24 +156,6 @@ class Parser:
         while self.current_token() and self.current_token()[1] == 'OPERADOR' and self.current_token()[0] not in [':=', '=']:
             operador = self.consume('OPERADOR')
             right = self.termo()
-            # Verificação de tipos (por simplicidade, supondo que termos são variáveis ou números)
-            if left[1] == 'ID':
-                left_type = self.semantic_analyzer.check_variable(left[0])
-            elif left[1] == 'NUMERO':
-                left_type = 'inteiro'
-            elif left[1] == 'DECIMAL':
-                left_type = 'decimal'
-            
-            if right[1] == 'ID':
-                right_type = self.semantic_analyzer.check_variable(right[0])
-            elif right[1] == 'NUMERO':
-                right_type = 'inteiro'
-            elif right[1] == 'DECIMAL':
-                right_type = 'decimal'
-            
-            if left_type != right_type or left_type != 'inteiro' and left_type != 'decimal':
-                raise TypeError(f"Operação inválida entre tipos '{left_type}' e '{right_type}'")
-            
             left = ('binop', operador, left, right)
         return left
 
@@ -143,8 +165,6 @@ class Parser:
             return self.consume('ID')
         elif token[1] == 'NUMERO':
             return self.consume('NUMERO')
-        elif token[1] == 'DECIMAL':
-            return self.consume('DECIMAL')
         elif token[0] == '(':
             self.consume('DELIMITADOR', '(')
             expr = self.expr()
@@ -162,37 +182,40 @@ class Parser:
 
     def argumento(self):
         token = self.current_token()
-        if token[1] in ['TEXTO', 'ID', 'NUMERO', 'DECIMAL']:
+        if token[1] in ['TEXTO', 'ID', 'NUMERO']:
             return self.consume()
         else:
             raise SyntaxError(f"Argumento inválido: {token}")
 
     def atribuicao(self):
         id_token = self.consume('ID')
-        print(id_token)
-        self.semantic_analyzer.check_variable(id_token[0])  # Verifica se a variável foi declarada
         operador = self.consume('OPERADOR', ':=')
         expr = self.expr()
         self.consume('DELIMITADOR', ';')
         return ('atribuicao', id_token, operador, expr)
-    
-tokens = []
 
-# Teste do lexer e parser com análise semântica
-with open('./tokens.txt', 'r', encoding='utf-8') as arquivo:
-  linhas = arquivo.readlines()
+# Teste do lexer e parser
+codigo_teste = """
+programa
+inteiro x, y;
+escreva("Olá, mundo!");
+leia(x);
+if (x > 0) {
+    y := x * 2;
+    escreva("O dobro de ", x, " é ", y);
+} else {
+    escreva("O valor de x é negativo");
+}
+fimprog
+"""
 
-for linha in linhas:
-  linha = linha.strip().strip("()").replace("'", "")
-  token, tipo = linha.split(', ')
-  tokens.append((token, tipo))
+tokens = lexer(codigo_teste)
+print("Tokens:")
+for token in tokens:
+    print(token)
 
 parser = Parser(tokens)
 ast = parser.parse()
-
-with open('semantic_analysis.txt', 'w', encoding='utf-8') as f:
-  f.write(str(ast) + '\n')
-
-# print("AST:")
-# print(ast)
-# print()
+# ast = parser(tokens)
+with open('ast.txt', 'w') as f:
+    f.write(str(ast) + '\n')
