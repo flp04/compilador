@@ -178,7 +178,7 @@ class Parser:
 tokens = []
 
 # Teste do lexer e parser com análise semântica
-with open('tokens.txt', 'r', encoding='utf-8') as arquivo:
+with open('./tokens.txt', 'r', encoding='utf-8') as arquivo:
   linhas = arquivo.readlines()
 
 for linha in linhas:
@@ -186,21 +186,12 @@ for linha in linhas:
   token, tipo = linha.split(', ')
   tokens.append((token, tipo))
 
-# print(tokens.split('\n'))
-
-# print(tokens)
-
-# i=1
-# for token in tokens:
-#   print(i)
-#   print(token)
-#   i += 1
-
 parser = Parser(tokens)
 ast = parser.parse()
 
-print("\nAST:")
-print(ast)
-
 with open('semantic_analysis.txt', 'w', encoding='utf-8') as f:
   f.write(str(ast) + '\n')
+
+# print("AST:")
+# print(ast)
+# print()

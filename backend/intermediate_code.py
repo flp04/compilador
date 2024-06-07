@@ -66,11 +66,12 @@ def generate_intermediate_code(ast):
     return "\n".join(intermediate_code)
 
 if __name__ == "__main__":
-    with open('../backend/semantic_analysis.txt', 'r', encoding='utf-8') as f:
+    with open('./semantic_analysis.txt', 'r', encoding='utf-8') as f:
         ast = eval(f.read())
     intermediate_code = generate_intermediate_code(ast)
-    with open('intermediate_code.txt', 'w', encoding='utf-8') as f:
+    with open('./intermediate_code.txt', 'w', encoding='utf-8') as f:
         f.write(intermediate_code)
 
-    print("Código Intermediário:")
-    print(intermediate_code)
+    # print("Código Intermediário:")
+    # print(intermediate_code)
+    # print()

@@ -51,13 +51,15 @@ def lexer(codigo):
     return tokens
 
 # Teste do lexer e parser com análise semântica
-with open('../codigo_fonte.txt', 'r', encoding='utf-8') as f:
-    codigo_teste = eval(f.read())
+with open('codigo_fonte.txt', 'r', encoding='utf-8') as f:
+    codigo_teste = f.read()
+
 tokens = lexer(codigo_teste)
 
-print("Tokens:")
-print(tokens)
-
-with open('tokens.txt', 'w', encoding='utf-8') as f:
+with open('./tokens.txt', 'w', encoding='utf-8') as f:
     for token in tokens:
         f.write(str(token) + '\n')
+
+# print("Tokens:")
+# print(tokens)
+# print()
