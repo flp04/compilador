@@ -7,9 +7,11 @@ Para executar as fases do compilador execute o arquivo "main.py" na pasta raiz. 
 Após finalizar o processo de tradução, o programa irá gerar como saída "codigo_objeto.java" na pasta raiz do programa, contendo um script de saída correspondente ao "codigo_fonte", também na pasta raiz.
 
 ## Gramática da linguagem Portugol  
-  **Tipos de variável:** texto, inteiro, decimal
+  **Tipos de variável:**  
+    texto, inteiro, decimal
 
   **Sintaxe da declaração de variável:** &lt;tipo_variavel&gt; &lt;identificador&gt;;  
+
     *Exemplo:*
       int idade;  
   
