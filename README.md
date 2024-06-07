@@ -10,33 +10,34 @@ Após finalizar o processo de tradução, o programa irá gerar como saída "cod
   **Tipos de variável:**  
     texto, inteiro, decimal
 
-  **Sintaxe da declaração de variável:** &lt;tipo_variavel&gt; &lt;identificador&gt;;  
+  **Sintaxe da declaração de variável:**  
+    &lt;tipo_variavel&gt; &lt;identificador&gt;;  
 
     *Exemplo:*
       int idade;  
   
-  **Operador de atribuição**
+  **Operador de atribuição**  
     :=
 
-  **Sintaxe da atribuição de variável:** &lt;identificador&gt; := &lt;expressao&gt;  
+  **Sintaxe da atribuição de variável:**  
+    &lt;identificador&gt; := &lt;expressao&gt;  
 
     *Exemplo:* 
       idade := 37;  
   
-  **Operadores Aritméticos**
+  **Operadores Aritméticos**  
     +, -, *, /  
     *o + também pode ser usado como operador de concatenação*
   
-  **Operadores de Relação**
+  **Operadores de Relação**  
     ==, !=, >=, <=, >, <
 
-  **Estrutura condicional**  
-    *Sintaxe:* 
-      se (-expressao- -operador_relacao- -expressao-) {
-        // comando a executar
-      } senao {
-        // comando a executar
-      }
+  **Sintaxe da estrutura condicional**  
+    se (-expressao- -operador_relacao- -expressao-) {
+      // comando a executar
+    } senao {
+      // comando a executar
+    }
 
     *Exemplo:*
       se (idade >= 18) {
