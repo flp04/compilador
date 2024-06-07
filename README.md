@@ -27,13 +27,14 @@ Após finalizar o processo de tradução, o programa irá gerar como saída "cod
   
   **Operadores Aritméticos**  
     +, -, *, /  
+    
     *o + também pode ser usado como operador de concatenação*
   
   **Operadores de Relação**  
     ==, !=, >=, <=, >, <
 
   **Sintaxe da estrutura condicional**  
-    se (-expressao- -operador_relacao- -expressao-) {
+    se (&lt;expressao&gt; &lt;operador_relacao&gt; &lt;expressao&gt;) {
       // comando a executar
     } senao {
       // comando a executar
