@@ -1,3 +1,5 @@
+import ast
+
 def generate_final_code(optimized_code):
     # Implementação da geração de código final
     final_code = []
@@ -6,9 +8,14 @@ def generate_final_code(optimized_code):
     # Exemplo simples de geração de código final
     for line in lines:
         if line.startswith("DECLARE"):
-            # var_type = "let"
-            var_type = "int" if "inteiro" in line else "double"
             var_name = line.split()[1]
+            symbol_type = check_symbol_type(var_name)
+            if symbol_type == 'inteiro':
+                var_type = 'int'
+            elif symbol_type == 'decimal':
+                var_type = 'double'
+            elif symbol_type == 'texto':
+                var_type = 'String'
             final_code.append(f"{var_type} {var_name};")
         elif ":=" in line:
             var, expr = line.split(":=")
@@ -20,10 +27,13 @@ def generate_final_code(optimized_code):
             final_code.append(f"System.out.println({args});")
         elif line.startswith("LEIA"):
             var_name = line.split()[1]
-            if var_type == 'int':
+            var_type = check_symbol_type(var_name)
+            if var_type == 'inteiro':
                 final_code.append(f"{var_name} = scanner.nextInt();")
-            elif var_type in 'double':
+            elif var_type == 'decimal':
                 final_code.append(f"{var_name} = scanner.nextDouble();")
+            elif var_type in 'texto':
+                final_code.append(f"{var_name} = scanner.nextLine();")
         elif line == "INICIO_PROGRAMA":
             final_code.append("public class Main { public static void main(String[] args) {")
             for l in lines:
@@ -51,7 +61,15 @@ def generate_final_code(optimized_code):
 
     return "\n".join(final_code)
 
+def check_symbol_type(var_name):
+    return symbol_table[var_name]
+
 if __name__ == "__main__":
+    with open('./symbol_table.txt', 'r', encoding='utf-8') as f:
+        symbol_table = f.read()
+
+    symbol_table = ast.literal_eval(symbol_table)
+
     with open('./intermediate_code.txt', 'r', encoding='utf-8') as f:
         optimized_code = f.read()
     final_code = generate_final_code(optimized_code)

@@ -4,6 +4,7 @@ class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
         self.pos = 0
+        self.linha = 0
         self.semantic_analyzer = SemanticAnalyzer()
 
     def current_token(self):
@@ -16,7 +17,7 @@ class Parser:
             return token
         else:
             expected = f"{expected_type} {expected_value}".strip()
-            raise SyntaxError(f"Expected {expected} but got {token}")
+            raise SyntaxError(f"Esperado {expected} na linha {self.pos}, mas obteve {token[0]}")
 
     def parse(self):
         return self.programa()
@@ -30,10 +31,11 @@ class Parser:
     def corpo(self):
         statements = []
         while self.current_token() and self.current_token()[0] != 'fimprog':
-            if self.current_token()[0] in ['inteiro', 'decimal']:
+            if self.current_token()[0] in ['inteiro', 'decimal', 'texto']:
                 statements.append(self.declaracao())
             else:
                 statements.append(self.comando())
+            self.linha += 1
         return statements
 
     def declaracao(self):
@@ -46,7 +48,7 @@ class Parser:
 
     def tipo(self):
         token = self.consume('PALAVRA_CHAVE')
-        if token[0] not in ['inteiro', 'decimal']:
+        if token[0] not in ['inteiro', 'decimal', 'texto']:
             raise SyntaxError(f"Tipo inválido: {token[0]}")
         return token[0]
 
@@ -123,15 +125,18 @@ class Parser:
                 left_type = 'inteiro'
             elif left[1] == 'DECIMAL':
                 left_type = 'decimal'
-            
+            elif left[1] == 'TEXTO':
+                left_type = 'texto'
             if right[1] == 'ID':
                 right_type = self.semantic_analyzer.check_variable(right[0])
             elif right[1] == 'NUMERO':
                 right_type = 'inteiro'
             elif right[1] == 'DECIMAL':
                 right_type = 'decimal'
-            
-            if left_type != right_type or left_type != 'inteiro' and left_type != 'decimal':
+            elif right[1] == 'TEXTO':
+                right_type = 'texto'
+
+            if operador[0] != '+' and left_type != right_type or (left_type != 'inteiro' and left_type != 'decimal' and left_type != 'texto'):
                 raise TypeError(f"Operação inválida entre tipos '{left_type}' e '{right_type}'")
             
             left = ('binop', operador, left, right)
@@ -145,6 +150,9 @@ class Parser:
             return self.consume('NUMERO')
         elif token[1] == 'DECIMAL':
             return self.consume('DECIMAL')
+        elif token[1] == 'TEXTO':
+            # print(token)
+            return self.consume('TEXTO')
         elif token[0] == '(':
             self.consume('DELIMITADOR', '(')
             expr = self.expr()
@@ -155,8 +163,8 @@ class Parser:
 
     def argumento_list(self):
         argumentos = [self.argumento()]
-        while self.current_token() and self.current_token()[0] == ',':
-            self.consume('DELIMITADOR', ',')
+        while self.current_token() and self.current_token()[0] in [',', '+']:
+            self.consume(self.current_token()[1], self.current_token()[0])
             argumentos.append(self.argumento())
         return argumentos
 
@@ -168,8 +176,8 @@ class Parser:
             raise SyntaxError(f"Argumento inválido: {token}")
 
     def atribuicao(self):
+        # print('aqui')
         id_token = self.consume('ID')
-        print(id_token)
         self.semantic_analyzer.check_variable(id_token[0])  # Verifica se a variável foi declarada
         operador = self.consume('OPERADOR', ':=')
         expr = self.expr()
@@ -188,10 +196,16 @@ for linha in linhas:
   tokens.append((token, tipo))
 
 parser = Parser(tokens)
-ast = parser.parse()
 
-with open('semantic_analysis.txt', 'w', encoding='utf-8') as f:
-  f.write(str(ast) + '\n')
+try:
+    ast = parser.parse()
+    with open('semantic_analysis.txt', 'w', encoding='utf-8') as f:
+        f.write(str(ast) + '\n')
+
+    with open('symbol_table.txt', 'w', encoding='utf-8') as f:
+        f.write(str(parser.semantic_analyzer.symbol_table) + '\n')
+except SyntaxError as e:
+    print(f"Erro sintático: {e}")
 
 # print("AST:")
 # print(ast)

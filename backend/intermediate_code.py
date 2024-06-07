@@ -27,7 +27,7 @@ def generate_intermediate_code(ast):
             intermediate_code.append(f"LEIA {var_name}")
         
         elif node[0] == 'escreva':
-            args = ", ".join(arg[0] if arg[1] != 'TEXTO' else f'"{arg[0]}"' for arg in node[1])
+            args = " + ".join(arg[0] if arg[1] != 'TEXTO' else f'"{arg[0]}"' for arg in node[1])
             intermediate_code.append(f"ESCREVA {args}")
         
         elif node[0] == 'se' or node[0] == 'if_else':
@@ -53,6 +53,8 @@ def generate_intermediate_code(ast):
             return node[0]
         if node[1] == 'DECIMAL':
             return node[0]
+        if node[1] == 'TEXTO':
+            return f'"{node[0]}"'
         elif node[1] == 'ID':
             return node[0]
         elif node[0] == 'binop':

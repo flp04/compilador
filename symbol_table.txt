@@ -1,0 +1,1 @@
+{'notaA1': 'decimal', 'notaA2': 'decimal', 'notaA3': 'decimal', 'soma_notas': 'decimal', 'media': 'decimal'}

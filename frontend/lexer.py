@@ -12,7 +12,7 @@ TIPOS_TOKEN = {
 }
 
 # Palavras-chave da linguagem
-PALAVRAS_CHAVE = ['programa', 'fimprog', 'inteiro', 'decimal', 'leia', 'escreva', 'se', 'senao']
+PALAVRAS_CHAVE = ['programa', 'fimprog', 'inteiro', 'decimal', 'texto', 'leia', 'escreva', 'se', 'senao']
 
 # Operadores e delimitadores
 OPERADORES = ['+', '-', '*', '/', '<', '>', '<=', '>=', '!=', '==', ':=', '=']
