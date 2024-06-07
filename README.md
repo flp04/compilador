@@ -35,9 +35,9 @@ Após finalizar o processo de tradução, o programa irá gerar como saída "cod
 
   **Sintaxe da estrutura condicional**  
     se (&lt;expressao&gt; &lt;operador_relacao&gt; &lt;expressao&gt;) {
-      // comando a executar
+      comando a executar...
     } senao {
-      // comando a executar
+      comando a executar...
     }
 
     *Exemplo:*
