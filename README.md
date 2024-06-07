@@ -9,14 +9,14 @@ Após finalizar o processo de tradução, o programa irá gerar como saída "cod
 ## Gramática da linguagem Portugol  
   **Tipos de variável:** texto, inteiro, decimal
 
-  **Sintaxe da declaração de variável:** -tipo_variavel- -identificador->;  
+  **Sintaxe da declaração de variável:** &lt;tipo_variavel&gt; &lt;identificador&gt;;  
     *Exemplo:*
       int idade;  
   
   **Operador de atribuição**
     :=
 
-  **Sintaxe da atribuição de variável:** -identificador- := -expressao-  
+  **Sintaxe da atribuição de variável:** &lt;identificador&gt; := &lt;expressao&gt;  
 
     *Exemplo:* 
       idade := 37;  
