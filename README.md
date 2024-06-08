@@ -2,9 +2,11 @@
 Projeto desenvolvido na unidade curricular Teoria da Computação e Compiladores do curso de Ciências da Computação. O programa, desenvolvido em Python, recebe um código fonte em Portugol como entrada e gera um código objeto em Java como saída.
 
 ## Execução
-Para executar as fases do compilador execute o arquivo "main.py" na pasta raiz. Ele irá executar os scripts das fases de frontend e backend do compilador, contidos nas pastas do programa.
+Para executar o processo de tradução execute o arquivo "main.py" na pasta raiz.
 
-Após finalizar o processo de tradução, o programa irá criar os arquivos "tokens.txt", "semantyc_analyzer.txt", "tabela_simbolos.txt, decorrentes das análises do frontend, e como saída o "codigo_objeto.java" contendo um script correspondente ao "codigo_fonte.txt".
+Ele irá executar os scripts das fases de frontend e backend do compilador, gerando os arquivos "tokens.txt", "ast.txt", "tabela_simbolos.txt", "codigo_intermediario.txt" e por fim o "codigo_final.java", contendo um script correspondente ao "codigo_fonte.txt", presente na pasta raiz do projeto.
+
+*Requisitos*: ambiente python instalado
 
 ## Gramática da linguagem Portugol  
   **Tipos de variável:**  
@@ -50,7 +52,7 @@ Após finalizar o processo de tradução, o programa irá criar os arquivos "tok
         escreva("Menor de idade.")
       }
 
-  **Sintaxe da estrutura de repetição**
+  **Sintaxe da estrutura de repetição**  
     enquanto (&lt;expressao&gt;) {
       comando a executar...
     }
