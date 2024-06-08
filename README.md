@@ -50,10 +50,10 @@ Após finalizar o processo de tradução, o programa irá criar os arquivos "tok
         escreva("Menor de idade.")
       }
 
-  **Operadores de comentário**
-    //, *...*
+  **Operadores de comentário**  
+    //, \*...\*
 
       *Exemplo:*
-        // comentário utilizando somente uma linha
+        // comentário utilizando somente uma linha  
         * comentário que pode
           utilizar múltiplas linhas *
