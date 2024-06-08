@@ -54,6 +54,7 @@ Após finalizar o processo de tradução, o programa irá criar os arquivos "tok
     //, \*...\*
 
       *Exemplo:*
-        // comentário utilizando somente uma linha  
+        // comentário utilizando somente uma linha
+          
         * comentário que pode
           utilizar múltiplas linhas *
