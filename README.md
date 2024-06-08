@@ -11,7 +11,7 @@ Após finalizar o processo de tradução, o programa irá criar os arquivos "tok
     texto, inteiro, decimal
 
   **Palavras-chave:**  
-    leia, escreva,
+    programa, fimprog, leia, escreva, se, senao, enquanto
 
   **Sintaxe da declaração de variável:**  
     &lt;tipo_variavel&gt; &lt;identificador&gt;;  
@@ -31,13 +31,13 @@ Após finalizar o processo de tradução, o programa irá criar os arquivos "tok
   **Operadores Aritméticos**  
     +, -, *, /  
     
-    *o + também pode ser usado como operador de concatenação*
+    o + também pode ser usado como operador de concatenação
   
   **Operadores de Relação**  
     ==, !=, >=, <=, >, <
 
   **Sintaxe da estrutura condicional**  
-    se (&lt;expressao&gt; &lt;operador_relacao&gt; &lt;expressao&gt;) {
+    se (&lt;expressao&gt;) {
       comando a executar...
     } senao {
       comando a executar...
@@ -50,11 +50,24 @@ Após finalizar o processo de tradução, o programa irá criar os arquivos "tok
         escreva("Menor de idade.")
       }
 
+  **Sintaxe da estrutura de repetição**
+    enquanto (&lt;expressao&gt;) {
+      comando a executar...
+    }
+
+    *Exemplo:*
+      inteiro contador;
+      contador := 0;
+      enquanto (contador <= 10) {
+        escreva(contador);
+        contador := contador + 1;
+      }
+
   **Operadores de comentário**  
     //, \*...\*
 
       *Exemplo:*
         // comentário utilizando somente uma linha
-          
+
         * comentário que pode
           utilizar múltiplas linhas *

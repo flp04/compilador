@@ -55,7 +55,11 @@ def generate_final_code(optimized_code):
             # final_code.append("else:")
         elif line == "ENDIF":
             final_code.append("}")
-            # final_code.append("# End if")
+        elif line.startswith("WHILE"):
+            partes = line.split()
+            final_code.append(f"while ({partes[1]} {partes[2]} {partes[3]})" + " {")
+        elif line == "ENDWHILE":
+            final_code.append("}")
         else:
             final_code.append(line)
 

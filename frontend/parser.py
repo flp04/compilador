@@ -66,6 +66,8 @@ class Parser:
             return self.leia()
         elif self.current_token()[0] == 'se':
             return self.condicional()
+        elif self.current_token()[0] == 'enquanto':
+            return self.repeticao()
         elif self.current_token()[0] == '{':
             return self.bloco()
         elif self.current_token()[1] == 'ID':
@@ -104,6 +106,18 @@ class Parser:
             else_bloco = self.bloco()
             return ('if_else', expr, bloco, else_bloco)
         return ('se', expr, bloco)
+
+    def repeticao(self):
+        self.consume('PALAVRA_CHAVE', 'enquanto')
+        self.consume('DELIMITADOR', '(')
+        expr = self.expr()
+        self.consume('DELIMITADOR', ')')
+        bloco = self.bloco()
+        # if self.current_token() and self.current_token()[0] == 'senao':
+        #     self.consume('PALAVRA_CHAVE', 'senao')
+        #     else_bloco = self.bloco()
+        #     return ('if_else', expr, bloco, else_bloco)
+        return ('enquanto', expr, bloco)
 
     def bloco(self):
         self.consume('DELIMITADOR', '{')

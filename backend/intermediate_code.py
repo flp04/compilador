@@ -38,6 +38,15 @@ def generate_intermediate_code(ast):
                 intermediate_code.append("ELSE")
                 traverse(node[3])
             intermediate_code.append("ENDIF")
+
+        elif node[0] == 'enquanto':
+            expr = generate_expression_code(node[1])
+            intermediate_code.append(f"WHILE {expr} DO")
+            traverse(node[2])
+            # if node[0] == 'if_else':
+            #     intermediate_code.append("ELSE")
+            #     traverse(node[3])
+            intermediate_code.append("ENDWHILE")
         
         elif node[0] == 'bloco':
             for cmd in node[1]:

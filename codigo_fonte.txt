@@ -21,6 +21,16 @@ leia(notaA3);
 soma_notas := (notaA1 + notaA2 + notaA3); // utilizada variável para calcular a soma das notas
 media := soma_notas / 3.0;
 
+* 
+  teste do uso da estrutura de repetição while
+  inteiro contador;
+  contador := 0;
+  enquanto (contador <= 3) {
+    escreva(contador);
+    contador := contador + 1;
+  }
+*
+
 se (media >= 7.0) { // condicional que verifica aprovação conforme nota de corte
   escreva("Média: " + media);
   escreva("Aluno aprovado.");
