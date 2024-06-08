@@ -1,6 +1,7 @@
 rascunho/
 frontend/__pycache__
 tokens.txt
-semantic_analysis.txt
+ast.txt
+tabela_simbolos.txt
 codigo_intermediario.txt
 codigo_objeto.java

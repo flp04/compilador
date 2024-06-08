@@ -4,11 +4,14 @@ Projeto desenvolvido na unidade curricular Teoria da Computação e Compiladores
 ## Execução
 Para executar as fases do compilador execute o arquivo "main.py" na pasta raiz. Ele irá executar os scripts das fases de frontend e backend do compilador, contidos nas pastas do programa.
 
-Após finalizar o processo de tradução, o programa irá criar os arquivos "tokens.txt", "semantyc_analyzer.txt", "symbol_table.txt, decorrentes das análises do frontend, e como saída o "codigo_objeto.java" contendo um script correspondente ao "codigo_fonte.txt".
+Após finalizar o processo de tradução, o programa irá criar os arquivos "tokens.txt", "semantyc_analyzer.txt", "tabela_simbolos.txt, decorrentes das análises do frontend, e como saída o "codigo_objeto.java" contendo um script correspondente ao "codigo_fonte.txt".
 
 ## Gramática da linguagem Portugol  
   **Tipos de variável:**  
     texto, inteiro, decimal
+
+  **Palavras-chave:**  
+    leia, escreva,
 
   **Sintaxe da declaração de variável:**  
     &lt;tipo_variavel&gt; &lt;identificador&gt;;  
@@ -46,4 +49,11 @@ Após finalizar o processo de tradução, o programa irá criar os arquivos "tok
       } senao {
         escreva("Menor de idade.")
       }
-  
+
+  **Operadores de comentário**
+    //, *...*
+
+      *Exemplo:*
+        // comentário utilizando somente uma linha
+        * comentário que pode
+          utilizar múltiplas linhas *
