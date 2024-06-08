@@ -199,13 +199,19 @@ parser = Parser(tokens)
 
 try:
     ast = parser.parse()
-    with open('semantic_analysis.txt', 'w', encoding='utf-8') as f:
+    with open('ast.txt', 'w', encoding='utf-8') as f:
         f.write(str(ast) + '\n')
 
-    with open('symbol_table.txt', 'w', encoding='utf-8') as f:
+    print('Árvore de sintaxe abstrata gerada.')
+
+    with open('tabela_simbolos.txt', 'w', encoding='utf-8') as f:
         f.write(str(parser.semantic_analyzer.symbol_table) + '\n')
+
+    print('Tabela de símbolos gerada.')
+
 except SyntaxError as e:
     print(f"Erro sintático: {e}")
+
 
 # print("AST:")
 # print(ast)

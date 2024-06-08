@@ -1,19 +1,32 @@
+*
+  CÓDIGO-FONTE TESTE DO COMPILADOR DE PORTUGOL PARA JAVA
+  PROGRAMA PARA CALCULAR A MÉDIA SEMESTRAL E APROVAÇÃO DO ALUNO
+  PARA CONHECER A GRAMÁTICA DA LINGUAGEM UTILIZADA VERIFIQUE O README
+*
+
 programa
-decimal notaA1, notaA2, notaA3, soma_notas, media;
+
+decimal notaA1, notaA2, notaA3, soma_notas, media; // declaração das variaveis
 escreva("PROGRAMA PARA CALCULAR A MÉDIA DO SEMESTRE");
+
+// Sequência para solicitar as notas ao usuario
 escreva("Digite a nota da A1");
 leia(notaA1);
 escreva("Digite a nota da A2");
 leia(notaA2);
 escreva("Digite a nota da A3");
 leia(notaA3);
-soma_notas := (notaA1 + notaA2 + notaA3);
+
+*Cálculo da média do aluno*
+soma_notas := (notaA1 + notaA2 + notaA3); // utilizada variável para calcular a soma das notas
 media := soma_notas / 3.0;
-se (media >= 7.0) {
+
+se (media >= 7.0) { // condicional que verifica aprovação conforme nota de corte
   escreva("Média: " + media);
   escreva("Aluno aprovado.");
 } senao {
+  escreva("Média: " + media);
   escreva("Aluno reprovado.");
-  escreva(media);
 }
+
 fimprog

@@ -1,0 +1,16 @@
+INICIO_PROGRAMA
+DECLARE notaA1 decimal
+DECLARE notaA2 decimal
+DECLARE notaA3 decimal
+DECLARE media decimal
+ESCREVA "PROGRAMA PARA CALCULO DA MÉDIA SEMESTRAL DO ALUNO"
+ESCREVA "Digite a nota da A1"
+LEIA notaA1
+ESCREVA "Digite a nota da A2"
+LEIA notaA2
+ESCREVA "Digite a nota da A3"
+LEIA notaA3
+media := notaA1 + notaA2 + notaA3
+media := media / 3.0
+ESCREVA media
+FIM_PROGRAMA

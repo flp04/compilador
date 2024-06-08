@@ -65,18 +65,20 @@ def check_symbol_type(var_name):
     return symbol_table[var_name]
 
 if __name__ == "__main__":
-    with open('./symbol_table.txt', 'r', encoding='utf-8') as f:
+    with open('./tabela_simbolos.txt', 'r', encoding='utf-8') as f:
         symbol_table = f.read()
 
     symbol_table = ast.literal_eval(symbol_table)
 
-    with open('./intermediate_code.txt', 'r', encoding='utf-8') as f:
+    with open('./codigo_intermediario.txt', 'r', encoding='utf-8') as f:
         optimized_code = f.read()
     final_code = generate_final_code(optimized_code)
+    
     with open('./codigo_objeto.java', 'w', encoding='utf-8') as f:
         f.write(final_code)
 
-    # print()
+    print('Código objeto gerado.')
+
     # print("Saída:")
     # print(final_code)
     # print()

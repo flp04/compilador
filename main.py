@@ -4,15 +4,16 @@ def main():
     print("Iniciando processo de tradução...")
     print()
 
+    print("Executando análise léxica...")
     os.system('python frontend/lexer.py')
-    print("Realizada análise léxica.")
 
+    print("Executando análise sintática e semântica...")
     os.system('python frontend/parser.py')
-    print("Realizada análise sintática e semântica.")
 
+    print("Geradando código intermediário...")
     os.system('python backend/intermediate_code.py')
-    print("Gerado código intermediário.")
 
+    print("Geradando código objeto...")
     os.system('python backend/code_generator.py')
     print("Gerado código objeto.")
 

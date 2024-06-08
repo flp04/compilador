@@ -20,7 +20,8 @@ DELIMITADORES = ['(', ')', '{', '}', ',', ';']
 
 def lexer(codigo):
     tokens = []
-    codigo = codigo.replace('\n', ' ')  # Remover quebras de linha
+    codigo = removerQuebraLinhasComentarios(codigo)
+    # codigo = codigo.replace('\n', ' ')  # Remover quebras de linha
     while codigo:
         # Verificar palavras-chave, identificadores, números, operadores, delimitadores e texto com expressões regulares
         match = re.match(r'\s*(\b(?:' + '|'.join(PALAVRAS_CHAVE) + r')\b|[a-zA-Z_á-úÁ-Ú][a-zA-Z0-9_á-úÁ-Ú]*|\d+(\.\d*)?|'
@@ -50,6 +51,11 @@ def lexer(codigo):
             raise ValueError('Token inválido: ' + codigo)
     return tokens
 
+def removerQuebraLinhasComentarios(codigo):
+    padrao_comentarios = r'\*(.|[\n])*?\*|//.*[\n]'
+    codigo = re.sub(padrao_comentarios, '', codigo)
+    return codigo
+            
 # Teste do lexer e parser com análise semântica
 with open('codigo_fonte.txt', 'r', encoding='utf-8') as f:
     codigo_teste = f.read()
@@ -59,6 +65,8 @@ tokens = lexer(codigo_teste)
 with open('./tokens.txt', 'w', encoding='utf-8') as f:
     for token in tokens:
         f.write(str(token) + '\n')
+
+print('Sequência de tokens gerada.')
 
 # print("Tokens:")
 # print(tokens)
