@@ -13,6 +13,7 @@ TIPOS_TOKEN = {
 
 # Palavras-chave da linguagem
 PALAVRAS_CHAVE = ['programa', 'fimprog', 'inteiro', 'decimal', 'texto', 'leia', 'escreva', 'se', 'senao', 'enquanto']
+# PALAVRAS_CHAVE = ['programa', 'fimprog', 'inteiro', 'decimal', 'texto', 'leia', 'escreva', 'se', 'senao', 'enquanto', 'arrumar']
 
 # Operadores e delimitadores
 OPERADORES = ['+', '-', '*', '/', '<', '>', '<=', '>=', '!=', '==', ':=', '=']
@@ -21,10 +22,9 @@ DELIMITADORES = ['(', ')', '{', '}', ',', ';']
 def lexer(codigo):
     tokens = []
     codigo = removerQuebraLinhasComentarios(codigo)
-    # codigo = codigo.replace('\n', ' ')  # Remover quebras de linha
     while codigo:
         # Verificar palavras-chave, identificadores, números, operadores, delimitadores e texto com expressões regulares
-        match = re.match(r'\s*(\b(?:' + '|'.join(PALAVRAS_CHAVE) + r')\b|[a-zA-Z_á-úÁ-Ú][a-zA-Z0-9_á-úÁ-Ú]*|\d+(\.\d*)?|'
+        match = re.match(r'\s*(\b(?:' + '|'.join(PALAVRAS_CHAVE) + r')\b|^[a-z_][a-zA-Z0-9_]*|\d+(\.\d*)?(?![a-zA-Z_á-úÁ-Ú])|'
                          r'\+|\-|\*|\/|<=|>=|<|>|!=|==|:=|=|\(|\)|\{|\}|,|;|"([^"\\]*(?:\\.[^"\\]*)*)")\s*', codigo)
         if match:
             valor = match.group(1)
@@ -39,16 +39,18 @@ def lexer(codigo):
                 tipo_token = TIPOS_TOKEN['NUMERO']
             elif re.match(r'\d+(\.\d*)?', valor):
                 tipo_token = TIPOS_TOKEN['DECIMAL']
-            elif valor[0].isalpha():
+            elif re.match(r'^[a-z_][a-zA-Z0-9_]*', valor[0]):
                 tipo_token = TIPOS_TOKEN['ID']
-            else:
+            elif re.match(r'^"([^"\\]*(?:\\.[^"\\]*)*)"', valor):
                 tipo_token = TIPOS_TOKEN['TEXTO']
                 valor = valor[1:-1]  # Remover aspas do texto
+            else:
+                raise ValueError('Token inválido: ' + valor)
             tokens.append((valor, tipo_token))
         elif codigo[0] == ' ':
             codigo = codigo[1:]  # Ignorar espaços em branco
         else:
-            raise ValueError('Token inválido: ' + codigo)
+            raise ValueError('Token inválido: ' + codigo.split()[0])
     return tokens
 
 def removerQuebraLinhasComentarios(codigo):
@@ -56,18 +58,18 @@ def removerQuebraLinhasComentarios(codigo):
     codigo = re.sub(padrao_comentarios, '', codigo)
     return codigo
             
-# Teste do lexer e parser com análise semântica
-with open('codigo_fonte.txt', 'r', encoding='utf-8') as f:
-    codigo_teste = f.read()
+try:
+    # Pegar o código fonte na pasta raiz
+    with open('codigo_fonte.txt', 'r', encoding='utf-8') as f:
+        codigo_teste = f.read()
 
-tokens = lexer(codigo_teste)
+    # Testar o código no analisador lexer
+    tokens = lexer(codigo_teste)
 
-with open('./tokens.txt', 'w', encoding='utf-8') as f:
-    for token in tokens:
-        f.write(str(token) + '\n')
-
-print('Sequência de tokens gerada.')
-
-# print("Tokens:")
-# print(tokens)
-# print()
+    # Salvar sequência de tokens em um arquivo texto
+    with open('./tokens.txt', 'w', encoding='utf-8') as f:
+        for token in tokens:
+            f.write(str(token) + '\n')
+    print('Sequência de tokens gerada.')
+except ValueError as e:
+    print(f"{e}")

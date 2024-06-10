@@ -60,6 +60,9 @@ def generate_final_code(optimized_code):
             final_code.append(f"while ({partes[1]} {partes[2]} {partes[3]})" + " {")
         elif line == "ENDWHILE":
             final_code.append("}")
+        # elif line == "ARRUMAR":
+        #     arg = line[len("ARRUMAR "):]
+        #     final_code.append(f"Math.round({arg})")
         else:
             final_code.append(line)
 

@@ -2,13 +2,16 @@
 Projeto desenvolvido na unidade curricular Teoria da Computação e Compiladores do curso de Ciências da Computação. O programa, desenvolvido em Python, recebe um código fonte em Portugol como entrada e gera um código objeto em Java como saída.
 
 ## Execução
+*Requisitos*: ambiente Python instalado
+
 Para executar o processo de tradução execute o arquivo "main.py" na pasta raiz.
 
-Ele irá executar os scripts das fases de frontend e backend do compilador, gerando os arquivos "tokens.txt", "ast.txt", "tabela_simbolos.txt", "codigo_intermediario.txt" e por fim o "codigo_final.java", contendo um script correspondente ao "codigo_fonte.txt", presente na pasta raiz do projeto.
-
-*Requisitos*: ambiente python instalado
+Ele irá executar os scripts das fases de frontend e backend do compilador, gerando os arquivos **tokens.txt**, **ast.txt**, **tabela_simbolos.txt**, **codigo_intermediario.txt** e por fim o **codigo_final.java**, contendo um script correspondente ao **codigo_fonte.txt**, presente na pasta raiz do projeto.
 
 ## Gramática da linguagem Portugol  
+  **Identificadores:**  
+    Os identificadores, como nomes de variáveis e métodos, devem iniciar com uma letra minúscula.
+
   **Tipos de variável:**  
     texto, inteiro, decimal
 
@@ -20,8 +23,10 @@ Ele irá executar os scripts das fases de frontend e backend do compilador, gera
 
     *Exemplo:*
       int idade;  
+
+  *Observação:* você deve declarar a variável antes de atribuir o valor.
   
-  **Operador de atribuição**  
+  **Operador de atribuição:**  
     :=
 
   **Sintaxe da atribuição de variável:**  
@@ -30,15 +35,15 @@ Ele irá executar os scripts das fases de frontend e backend do compilador, gera
     *Exemplo:* 
       idade := 37;  
   
-  **Operadores Aritméticos**  
+  **Operadores Aritméticos:**  
     +, -, *, /  
     
     o + também pode ser usado como operador de concatenação
   
-  **Operadores de Relação**  
+  **Operadores de Relação:**  
     ==, !=, >=, <=, >, <
 
-  **Sintaxe da estrutura condicional**  
+  **Sintaxe da estrutura condicional:**  
     se (&lt;expressao&gt;) {
       comando a executar...
     } senao {
@@ -52,7 +57,7 @@ Ele irá executar os scripts das fases de frontend e backend do compilador, gera
         escreva("Menor de idade.")
       }
 
-  **Sintaxe da estrutura de repetição**  
+  **Sintaxe da estrutura de repetição:**  
     enquanto (&lt;expressao&gt;) {
       comando a executar...
     }
@@ -65,7 +70,7 @@ Ele irá executar os scripts das fases de frontend e backend do compilador, gera
         contador := contador + 1;
       }
 
-  **Operadores de comentário**  
+  **Operadores de comentário:**  
     //, \*...\*
 
       *Exemplo:*

@@ -56,7 +56,7 @@ def generate_intermediate_code(ast):
             left = generate_expression_code(node[2])
             right = generate_expression_code(node[3])
             intermediate_code.append(f"{left} {node[1][0]} {right}")
-
+            
     def generate_expression_code(node):
         if node[1] == 'NUMERO':
             return node[0]
@@ -70,6 +70,9 @@ def generate_intermediate_code(ast):
             left = generate_expression_code(node[2])
             right = generate_expression_code(node[3])
             return f"{left} {node[1][0]} {right}"
+        # elif node[0] == 'arrumar':
+        #     return (f"ARRUMAR {node[1][0]}")
+
         else:
             raise ValueError("Tipo de expressão desconhecido")
 

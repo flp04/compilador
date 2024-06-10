@@ -60,6 +60,7 @@ class Parser:
         return variables
 
     def comando(self):
+        print(self.current_token()[0])
         if self.current_token()[0] == 'escreva':
             return self.escreva()
         elif self.current_token()[0] == 'leia':
@@ -68,6 +69,8 @@ class Parser:
             return self.condicional()
         elif self.current_token()[0] == 'enquanto':
             return self.repeticao()
+        # elif self.current_token()[0] == 'arrumar':
+        #     return self.arrumar()
         elif self.current_token()[0] == '{':
             return self.bloco()
         elif self.current_token()[1] == 'ID':
@@ -113,10 +116,6 @@ class Parser:
         expr = self.expr()
         self.consume('DELIMITADOR', ')')
         bloco = self.bloco()
-        # if self.current_token() and self.current_token()[0] == 'senao':
-        #     self.consume('PALAVRA_CHAVE', 'senao')
-        #     else_bloco = self.bloco()
-        #     return ('if_else', expr, bloco, else_bloco)
         return ('enquanto', expr, bloco)
 
     def bloco(self):
@@ -165,8 +164,9 @@ class Parser:
         elif token[1] == 'DECIMAL':
             return self.consume('DECIMAL')
         elif token[1] == 'TEXTO':
-            # print(token)
             return self.consume('TEXTO')
+        # elif token[0] == 'arrumar':
+        #     return self.arrumar()
         elif token[0] == '(':
             self.consume('DELIMITADOR', '(')
             expr = self.expr()
@@ -186,8 +186,10 @@ class Parser:
         token = self.current_token()
         if token[1] in ['TEXTO', 'ID', 'NUMERO', 'DECIMAL']:
             return self.consume()
+        # elif token[0] == 'arrumar':
+        #     return self.arrumar()
         else:
-            raise SyntaxError(f"Argumento inválido: {token}")
+            raise SyntaxError(f"Argumento inválido: {token[0]}")
 
     def atribuicao(self):
         # print('aqui')
@@ -197,6 +199,15 @@ class Parser:
         expr = self.expr()
         self.consume('DELIMITADOR', ';')
         return ('atribuicao', id_token, operador, expr)
+    
+    # def arrumar(self):
+    #     self.consume('PALAVRA_CHAVE', 'arrumar')
+    #     self.consume('DELIMITADOR', '(')
+    #     token = self.current_token()
+    #     self.semantic_analyzer.check_type(token[0], 'decimal')
+    #     argumentos = self.argumento_list()
+    #     self.consume('DELIMITADOR', ')')
+    #     return ('arrumar', token)
     
 tokens = []
 
