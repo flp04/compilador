@@ -11,18 +11,17 @@ def main():
         os.system('python frontend/parser.py')
 
         print("Geradando código intermediário...")
-        os.system('python backend/intermediate_code.py')
+        os.system('python backend/otimizador.py')
 
-        print("Geradando código objeto...")
-        os.system('python backend/code_generator.py')
-        print("Gerado código objeto.")
+        print("Geradando código de saída...")
+        os.system('python backend/gerador_codigo.py')
 
         print()
         print("Execução de fases do compilador concluída.")
         print()
 
         print("Saída:")
-        with open('codigo_objeto.java', 'r', encoding='utf-8') as f:
+        with open('codigo_saida.java', 'r', encoding='utf-8') as f:
             print(f.read())
     except KeyError as e:
         print(e)

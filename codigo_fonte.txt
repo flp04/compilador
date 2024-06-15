@@ -34,6 +34,13 @@ media := soma_notas / 3.0;
     contador := contador + 1;
   }
 *
+
+* teste do uso da estrutura de repetição while
+  inteiro i;
+  para(i := 0; i <= 10; i + 1) {
+    escreva(contador);
+  }
+*
 se (media >= 7.0) { // condicional que verifica aprovação conforme nota de corte
   escreva("Média: " + media);
   escreva(aluno + " aprovado.");
