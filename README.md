@@ -10,13 +10,13 @@ Ele irá executar os scripts das fases de frontend e backend do compilador, gera
 
 ## Gramática da linguagem Portugol  
   **Identificadores:**  
-    Os identificadores, como nomes de variáveis e métodos, devem iniciar com uma letra minúscula.
+    Devem iniciar com uma letra minúscula ou underline (_) e não podem possuir caracteres especiais.
 
   **Tipos de variável:**  
     texto, inteiro, decimal
 
   **Palavras-chave:**  
-    programa, fimprog, leia, escreva, se, senao, enquanto
+    programa, fimprog, leia, escreva, se, senao, enquanto, para
 
   **Sintaxe da declaração de variável:**  
     &lt;tipo_variavel&gt; &lt;identificador&gt;;  
@@ -57,7 +57,7 @@ Ele irá executar os scripts das fases de frontend e backend do compilador, gera
         escreva("Menor de idade.")
       }
 
-  **Sintaxe da estrutura de repetição:**  
+  **Sintaxe das estruturas de repetição:**  
     enquanto (&lt;expressao&gt;) {
       comando a executar...
     }
@@ -68,6 +68,16 @@ Ele irá executar os scripts das fases de frontend e backend do compilador, gera
       enquanto (contador <= 10) {
         escreva(contador);
         contador := contador + 1;
+      }
+
+    para (&lt;declaracao&gt;; &lt;expressao&gt;; &lt;expressao&gt;) {
+      comando a executar...
+    }
+
+    *Exemplo:*
+      inteiro i;
+      para (i := 10; i >= 0; i - 1) {
+        escreva(i);
       }
 
   **Operadores de comentário:**  
