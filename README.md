@@ -57,7 +57,7 @@ Ele irá executar os scripts das fases de frontend e backend do compilador, gera
         escreva("Menor de idade.")
       }
 
-  **Sintaxe das estruturas de repetição:**  
+  **Sintaxe da estrutura de repetição enquanto:**  
     enquanto (&lt;expressao&gt;) {
       comando a executar...
     }
@@ -70,6 +70,7 @@ Ele irá executar os scripts das fases de frontend e backend do compilador, gera
         contador := contador + 1;
       }
 
+  **Sintaxe da estrutura de repetição para:**  
     para (&lt;declaracao&gt;; &lt;expressao&gt;; &lt;expressao&gt;) {
       comando a executar...
     }
